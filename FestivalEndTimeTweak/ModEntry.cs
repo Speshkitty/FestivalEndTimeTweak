@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using System;
 using StardewModdingAPI;
 using StardewValley;
@@ -15,7 +15,7 @@ namespace FestivalEndTimeTweak
         {
             //Harmony patcher
             //https://github.com/kirbylink/FestivalEndTimeTweak.git
-            var harmony = HarmonyInstance.Create("com.github.kirbylink.festivalendtimetweak");
+            var harmony = new Harmony("com.github.kirbylink.festivalendtimetweak");
             var original = typeof(Event).GetMethod("exitEvent");
             var prefix = helper.Reflection.GetMethod(typeof(FestivalEndTimeTweak.ChangeFestivalEndTime), "Prefix").MethodInfo;
             var postfix = helper.Reflection.GetMethod(typeof(FestivalEndTimeTweak.ChangeFestivalEndTime), "Postfix").MethodInfo;
@@ -25,6 +25,7 @@ namespace FestivalEndTimeTweak
         }
     }
 
+    
     public static class ChangeFestivalEndTime
     {
         /* Check if Event.isFestival is true before going into exitEven() */
@@ -72,7 +73,7 @@ namespace FestivalEndTimeTweak
                 {
                     foreach (StardewValley.Object @object in location.objects.Values)
                         // Add back the previously subtracted minutes
-                        @object.minutesElapsed(minutes - oldMinutes, location);
+                        @object.minutesElapsed(minutes - oldMinutes);
                 }
             }
         }
